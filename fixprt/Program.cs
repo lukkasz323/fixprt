@@ -17,6 +17,7 @@
  * along with fixprt. If not, see <https://www.gnu.org/licenses/>.
  */
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -38,6 +39,7 @@ namespace fixprt
         static string prtfix = String.Empty; // Fixed portal file contents
         static Regex open = new Regex(@"[^\.\-\(\)\s\d]");
         static Regex fix = new Regex(@"(?<=^(?:.*[\n]+){2})(?:(?!.*[()]).*[\r\n]+)+");
+        static System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
 
         internal static class NativeMethods
         {
@@ -50,6 +52,9 @@ namespace fixprt
         [STAThread]
         static void Main()
         {
+            Console.WriteLine("\n-----  BEGIN  fixprt -----\n");
+            stopwatch.Start();
+
             args = Environment.GetCommandLineArgs();
             if (args.ElementAtOrDefault(1) != null)
             {
@@ -65,24 +70,24 @@ namespace fixprt
 
         static void Cmdline()
         {
-            NativeMethods.AllocConsole();
+            //NativeMethods.AllocConsole();
             filenametrim = args[1].Substring(0, args[1].LastIndexOf(".") + 1);
             if (filenametrim == "")
             {
                 filenametrim = args[1] + ".";
             }
             filenametrimsafe = Path.GetFileNameWithoutExtension(filenametrim);
-            StreamWriter sw = File.AppendText(filenametrim + "log");
+            //StreamWriter sw = File.AppendText(filenametrim + "log");
             Console.WriteLine("fixprt v1.0.0 (25/3/2020)");
-            sw.WriteLine("fixprt v1.0.0 (25/3/2020)");
+            //sw.WriteLine("fixprt v1.0.0 (25/3/2020)");
             Console.WriteLine("by seedee (cdaniel9000@gmail.com)");
-            sw.WriteLine("by seedee (cdaniel9000@gmail.com)");
-            Console.WriteLine("-----  BEGIN  fixprt -----");
-            sw.WriteLine("-----  BEGIN  fixprt -----");
+            //sw.WriteLine("by seedee (cdaniel9000@gmail.com)");
+            //Console.WriteLine("-----  BEGIN  fixprt -----");
+            //sw.WriteLine("-----  BEGIN  fixprt ----sw-");
             Console.WriteLine("Command line: " + String.Join(" ", args));
-            sw.WriteLine("Command line: " + String.Join(" ", args));
+            //sw.WriteLine("Command line: " + String.Join(" ", args));
             Console.WriteLine();
-            sw.WriteLine();
+            //sw.WriteLine();
             if (File.Exists(filenametrim + "prt"))
             {
                 using (StreamReader sr = new StreamReader(filenametrim + "prt"))
@@ -97,68 +102,68 @@ namespace fixprt
                     if (String.IsNullOrWhiteSpace(prt))
                     {
                         Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is not a valid portal file (null or whitespace)");
-                        sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is not a valid portal file (null or whitespace)");
+                        //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is not a valid portal file (null or whitespace)");
                         Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
-                        sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
+                        //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
                         Console.WriteLine();
-                        sw.WriteLine();
+                        //sw.WriteLine();
                         Console.WriteLine("-----   END   fixprt -----");
-                        sw.WriteLine("-----   END   fixprt -----");
+                        //sw.WriteLine("-----   END   fixprt -----");
                         Console.WriteLine();
-                        sw.WriteLine();
+                        //sw.WriteLine();
                         Console.WriteLine();
-                        sw.WriteLine();
+                        //sw.WriteLine();
                         Console.WriteLine();
-                        sw.WriteLine();
-                        sw.Dispose();
-                        NativeMethods.FreeConsole();
+                        //sw.WriteLine();
+                        //sw.Dispose();
+                        //NativeMethods.FreeConsole();
                         Application.Exit();
                     }
                     else if (prt.Contains("PRT1")) // Source engine portal files contain the PRT1 signature
                     {
                         Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is not a valid portal file (PRT signature detected)");
-                        sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is not a valid portal file (PRT signature detected)");
+                        //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is not a valid portal file (PRT signature detected)");
                         Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
-                        sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
+                        //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
                         Console.WriteLine();
-                        sw.WriteLine();
+                        //sw.WriteLine();
                         Console.WriteLine("-----   END   fixprt -----");
-                        sw.WriteLine("-----   END   fixprt -----");
+                        //sw.WriteLine("-----   END   fixprt -----");
                         Console.WriteLine();
-                        sw.WriteLine();
+                        //sw.WriteLine();
                         Console.WriteLine();
-                        sw.WriteLine();
+                        //sw.WriteLine();
                         Console.WriteLine();
-                        sw.WriteLine();
-                        sw.Dispose();
-                        NativeMethods.FreeConsole();
+                        //sw.WriteLine();
+                        //sw.Dispose();
+                        //NativeMethods.FreeConsole();
                         Application.Exit();
                     }
                     else if (open.IsMatch(prt)) // Only digits, whitespace, dashes, parentheses and full stops are allowed
 
                     {
                         Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is not a valid portal file (invalid characters)");
-                        sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is not a valid portal file (invalid characters)");
+                        //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is not a valid portal file (invalid characters)");
                         Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
-                        sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
+                        //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
                         Console.WriteLine();
-                        sw.WriteLine();
+                        //sw.WriteLine();
                         Console.WriteLine("-----   END   fixprt -----");
-                        sw.WriteLine("-----   END   fixprt -----");
+                        //sw.WriteLine("-----   END   fixprt -----");
                         Console.WriteLine();
-                        sw.WriteLine();
+                        //sw.WriteLine();
                         Console.WriteLine();
-                        sw.WriteLine();
+                        //sw.WriteLine();
                         Console.WriteLine();
-                        sw.WriteLine();
-                        sw.Dispose();
-                        NativeMethods.FreeConsole();
+                        //sw.WriteLine();
+                        //sw.Dispose();
+                        //NativeMethods.FreeConsole();
                         Application.Exit();
                     }
                     else if (!(open.IsMatch(prt)))
                     {
                         Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Opened " + filenametrimsafe + ".prt");
-                        sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Opened " + filenametrimsafe + ".prt");
+                        //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Opened " + filenametrimsafe + ".prt");
                     }
                 }
                 if (fix.IsMatch(prt))
@@ -177,14 +182,14 @@ namespace fixprt
                         prtfixcount++;
                     }
                     Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Fixed " + filenametrimsafe + ".prt (reduced " + prtcount + " lines to " + prtfixcount + " lines)");
-                    sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Fixed " + filenametrimsafe + ".prt (reduced " + prtcount + " lines to " + prtfixcount + " lines)");
+                    //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Fixed " + filenametrimsafe + ".prt (reduced " + prtcount + " lines to " + prtfixcount + " lines)");
                 }
                 else
                 {
-                    Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is already fixed" + Environment.NewLine);
-                    sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is already fixed" + Environment.NewLine);
+                    Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is already fixed");
+                    //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: " + filenametrimsafe + ".prt is already fixed");
                     Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
-                    sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
+                    //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
                 }
                 if (!(String.IsNullOrWhiteSpace(prtfix)))
                 {
@@ -195,27 +200,21 @@ namespace fixprt
                     File.WriteAllText(filenametrim + "prt", prt);
                 }
                 Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Saved " + filenametrimsafe + ".prt");
-                sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Saved " + filenametrimsafe + ".prt");
+                //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Saved " + filenametrimsafe + ".prt");
                 Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
-                sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
+                //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] Closed " + filenametrimsafe + ".prt");
             }
             else if (!(File.Exists(filenametrim + ".prt")))
             {
                 Console.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: Could not find the " + filenametrimsafe + ".prt file");
-                sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: Could not find the " + filenametrimsafe + ".prt file");
+                //sw.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss") + "] ERROR: Could not find the " + filenametrimsafe + ".prt file");
             }
-            Console.WriteLine();
-            sw.WriteLine();
-            Console.WriteLine("-----   END   fixprt -----");
-            sw.WriteLine("-----   END   fixprt -----");
-            Console.WriteLine();
-            sw.WriteLine();
-            Console.WriteLine();
-            sw.WriteLine();
-            Console.WriteLine();
-            sw.WriteLine();
-            sw.Dispose();
-            NativeMethods.FreeConsole();
+
+            stopwatch.Stop();
+            Console.WriteLine($"\nExecution Time: 0.{stopwatch.ElapsedMilliseconds} s");
+
+            //NativeMethods.FreeConsole();
+            Console.WriteLine("\n-----   END   fixprt -----\n");
             Application.Exit();
         }
     }
